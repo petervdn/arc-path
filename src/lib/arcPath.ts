@@ -111,7 +111,7 @@ function getRadiansForLength(length: number, radius: number): number {
   // todo get rid of this
   return length / radius;
 }
-interface IArcData {
+export interface IArcData {
   topLeft: IPoint;
   topRight: IPoint;
   bottomLeft: IPoint;
