@@ -23,26 +23,22 @@ Object.keys(settings).forEach(key => {
 
     // listen to change
     input.addEventListener('change', () => {
-      console.log(input.value);
+      settings[key] = input.checked;
+      draw();
     });
   } else {
     input.type = 'range';
 
     // listen to change
     input.addEventListener('input', () => {
-      if (typeof settings[key] === 'boolean') {
-        console.log(input.value);
-      } else {
-        const setting = settings[key];
-        let value = setting.min + parseInt(input.value, 10) / 100 * (setting.max - setting.min);
+      const setting = settings[key];
+      let value = setting.min + parseInt(input.value, 10) / 100 * (setting.max - setting.min);
 
-        if(setting.isInt) {
-          value = Math.round(value);
-        }
-
-        setting.value = value;
+      if(setting.isInt) {
+        value = Math.round(value);
       }
 
+      setting.value = value;
       draw();
     });
   }
@@ -78,7 +74,9 @@ const draw = () => {
     ctx.fill();
 
     ctx.globalAlpha = 1;
-    drawArcPoints(ctx, arcData);
+    if (settings.showPoints) {
+      drawArcPoints(ctx, arcData);
+    }
   }
 };
 
@@ -92,7 +90,7 @@ function drawArcPoints(
       return;
     }
     drawPoint(context, arcData[key].x, arcData[key].y, "red");
-    context.font = "10px monospace";
+    context.font = "9px monospace";
     context.fillStyle = "black";
     const space = 5;
     context.fillText(key, arcData[key].x + space, arcData[key].y - space);
