@@ -1,5 +1,4 @@
-
-import drawArcPath from '../../src/lib/arcPath';
+import drawArcPath from '../../src';
 
 const canvas = <HTMLCanvasElement>document.querySelector('canvas');
 
@@ -50,7 +49,8 @@ Object.keys(settings).forEach(key => {
 
   wrap.appendChild(label);
   wrap.appendChild(input);
-  document.body.appendChild(wrap);
+
+  document.getElementById('controls').appendChild(wrap);
 });
 
 
@@ -73,9 +73,11 @@ const draw = () => {
       settings.spacing.value,
     );
 
+    ctx.globalAlpha = 0.6;
     ctx.fillStyle = 'deepskyblue';
     ctx.fill();
 
+    ctx.globalAlpha = 1;
     drawArcPoints(ctx, arcData);
   }
 };

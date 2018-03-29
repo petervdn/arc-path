@@ -67,28 +67,28 @@ export function getArcData(
   const startRadiansInner = startRadians + halfInnerSpacingAngle;
   const endRadiansInner = endRadians - halfInnerSpacingAngle;
 
-  const tl: IPoint = {
+  const topLeft: IPoint = {
     x: centerX + Math.cos(startRadiansOuter) * outerRadius,
     y: centerY + Math.sin(startRadiansOuter) * outerRadius,
   };
-  const tr: IPoint = {
+  const topRight: IPoint = {
     x: centerX + Math.cos(endRadiansOuter) * outerRadius,
     y: centerY + Math.sin(endRadiansOuter) * outerRadius,
   };
-  const br: IPoint = {
+  const bottomRight: IPoint = {
     x: centerX + Math.cos(endRadiansInner) * innerRadius,
     y: centerY + Math.sin(endRadiansInner) * innerRadius,
   };
-  const bl: IPoint = {
+  const bottomLeft: IPoint = {
     x: centerX + Math.cos(startRadiansInner) * innerRadius,
     y: centerY + Math.sin(startRadiansInner) * innerRadius,
   };
 
   return {
-    tl,
-    tr,
-    br,
-    bl,
+    topLeft,
+    topRight,
+    bottomLeft,
+    bottomRight,
     startRadiansOuter,
     endRadiansOuter,
     startRadiansInner,
@@ -112,10 +112,10 @@ function getRadiansForLength(length: number, radius: number): number {
   return length / radius;
 }
 interface IArcData {
-  tl: IPoint;
-  tr: IPoint;
-  br: IPoint;
-  bl: IPoint;
+  topLeft: IPoint;
+  topRight: IPoint;
+  bottomLeft: IPoint;
+  bottomRight: IPoint;
   startRadiansOuter: number;
   endRadiansOuter: number;
   startRadiansInner: number;
