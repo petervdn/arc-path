@@ -1,6 +1,6 @@
 {
   "name": "arc-path",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Draw canvas arc-paths that have a width and equal spacing.",
   "main": "./index.js",
   "types": "./index.d.ts",
