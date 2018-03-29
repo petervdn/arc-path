@@ -26,5 +26,13 @@ drawArcPath(
 context.fill();
 ```
 
+The method makes sure that the spacing between multiple arcs all have a consistent width.
+
+![picture](https://i.imgur.com/thnaYDQ.png)
+
 ## return data
-The `drawArcPath` method returns an object containing info about the shape that was drawn.
+The `drawArcPath` method returns an object containing info about the shape that was drawn. it contains the start/end radians for both the inner and outer curve, and the locations of every cornerpoint, which may come in handy if you need to calculate bounding boxes.
+
+![picture](https://i.imgur.com/l4RJQkU.png)
+
+The naming for these 4 points (`topLeft`, `topRight`, `bottomLeft`, `bottomRight`) are in relation to an arc-part that is on the topside of the circle.
