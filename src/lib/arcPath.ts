@@ -1,3 +1,15 @@
+/**
+ * Draws a path consisting of 4 parts
+ * @param {CanvasRenderingContext2D} context
+ * @param {number} centerX
+ * @param {number} centerY
+ * @param {number} startRadians
+ * @param {number} endRadians
+ * @param {number} outerRadius in pixels
+ * @param {number} innerRadius in pixels
+ * @param {number} partSpacing in pixels
+ * @returns {IArcData}
+ */
 export default function drawArcPath(
   context: CanvasRenderingContext2D,
   centerX: number,
@@ -78,7 +90,8 @@ export function getArcData(
 
 /**
  * Returns the position for a point on a circle.
- * @param {IPoint} center
+ * @param {number} centerX
+ * @param {number} centerY
  * @param {number} radians
  * @param {number} radius
  * @returns {IPoint}
