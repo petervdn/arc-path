@@ -96,7 +96,7 @@ export function getArcData(
   };
 }
 
-interface IPoint {
+export interface IPoint {
   x: number;
   y: number;
 }
