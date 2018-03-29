@@ -26,7 +26,9 @@ drawArcPath(
 context.fill();
 ```
 
-The drawing will be done in such a way that the spacing between multiple arcs all have a consistent width. An example (drawing multiple arcs to fill up a full circle) can be found [here](https://petervdn.github.io/arc-path/example/). 
+The drawing will be done in such a way that the spacing between multiple arcs all have a consistent width, by adjusting the angle for the outer and inner arc. This prevents the gaps from being wider on the outer edge (which would be the case if the same angle was used for both the outer and inner arc). 
+
+An example (drawing multiple arcs to fill up a full circle) can be found [here](https://petervdn.github.io/arc-path/example/). 
 
 ![picture](https://i.imgur.com/thnaYDQ.png)
 
