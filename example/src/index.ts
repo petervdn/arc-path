@@ -1,107 +1,113 @@
-import Song from '../../src/lib/Song';
-import { createSampleSequence } from '../../src/lib/util/sequenceUtils';
-import SequencePlayer from '../../src/lib/SequencePlayer';
-import MusicTime from 'musictime';
-import { SequencePlayerEvent } from '../../src/lib/data/event';
-import AnimationFrame from '../../src/lib/util/AnimationFrame';
-import Editor from '../../src/lib/editor/Editor';
 
-const stateElement = <HTMLElement>document.querySelector('#state');
-const timeElement = <HTMLElement>document.querySelector('#time');
+import drawArcPath from '../../src/lib/arcPath';
 
-const showPlayerState = state => {
-  stateElement.innerText = state;
+const canvas = <HTMLCanvasElement>document.querySelector('canvas');
+
+const ctx = canvas.getContext('2d');
+const settings = {
+  innerRadius: { value: 120, min: 10, max: 150 },
+  outerRadius: { value: 200, min: 160, max: 300 },
+  numberOfParts: { value: 6, min: 1, max: 20, isInt: true },
+  spacing: { value: 40, min: 0, max: 100 },
+  showPoints: false,
 };
 
-const context = new AudioContext();
-const player = new SequencePlayer(context, 'samples/', 'wav');
-player.sampleManager.addSamplesFromNames(['kick', 'clap', 'synth', 'snare', 'hihat']);
+Object.keys(settings).forEach(key => {
+  const wrap = document.createElement('div');
+  const label = document.createElement('label');
+  label.style.display = 'block';
+  label.style.fontSize = '10px';
+  label.innerText = key;
+  const input = document.createElement('input');
+  if (typeof settings[key] === 'boolean') {
+    input.type = 'checkbox';
 
-showPlayerState(player.getState());
+    // listen to change
+    input.addEventListener('change', () => {
+      console.log(input.value);
+    });
+  } else {
+    input.type = 'range';
 
-player.addEventListener('state-change', (event: SequencePlayerEvent) => {
-  showPlayerState(event.data);
+    // listen to change
+    input.addEventListener('input', () => {
+      if (typeof settings[key] === 'boolean') {
+        console.log(input.value);
+      } else {
+        const setting = settings[key];
+        let value = setting.min + parseInt(input.value, 10) / 100 * (setting.max - setting.min);
+
+        if(setting.isInt) {
+          value = Math.round(value);
+        }
+
+        setting.value = value;
+      }
+
+      draw();
+    });
+  }
+
+  wrap.appendChild(label);
+  wrap.appendChild(input);
+  document.body.appendChild(wrap);
 });
 
-const animationFrame = new AnimationFrame(() => {
-  const musicTime = player.timeData.playMusicTime;
-  timeElement.innerText = `${musicTime.bars}.${musicTime.beats}.${musicTime.sixteenths}`;
-});
-animationFrame.start();
 
-const data1 = {
-  '0.0.0': ['kick', 1, 'synth', 1],
-  '0.1.0': ['kick', 1, 'clap', 1],
-  '0.2.0': ['kick', 1],
-  '0.3.0': ['kick', 1, 'clap', 1],
-  '1.0.0': ['kick', 1],
-  '1.1.0': ['kick', 1, 'clap', 1],
-  '1.2.0': ['kick', 1],
-  '1.3.0': ['kick', 1, 'clap', 1],
-  '2.0.0': ['kick', 1],
-  '2.1.0': ['clap', 1],
-  '2.2.0': [],
-  '2.3.0': ['clap', 1],
-  '3.0.0': ['kick', 1],
-  '3.1.0': ['clap', 1],
-  '3.2.0': [],
-  '3.3.0': ['clap', 1],
+const draw = () => {
+  ctx.fillStyle = '#DDD';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const radiansPerPart = Math.PI * 2 / settings.numberOfParts.value
+  for (let i = 0; i < settings.numberOfParts.value; i++) {
+    const startRadians = i * radiansPerPart;
+    const endRadians = startRadians + radiansPerPart;
+    const arcData = drawArcPath(
+      ctx,
+      canvas.width * 0.5,
+      canvas.height * 0.5,
+      startRadians,
+      endRadians,
+      settings.outerRadius.value,
+      settings.innerRadius.value,
+      settings.spacing.value,
+    );
+
+    ctx.fillStyle = 'deepskyblue';
+    ctx.fill();
+
+    drawArcPoints(ctx, arcData);
+  }
 };
-const data2 = {
-  '0.2.2': ['snare'],
-  '1.3.0': ['snare'],
-  '2.2.2': ['snare'],
-  '3.0.0': ['snare', 1 / 8],
-  '3.0.2': ['snare', 2 / 8],
-  '3.1.0': ['snare', 3 / 8],
-  '3.1.2': ['snare', 4 / 8],
-  '3.2.0': ['snare', 5 / 8],
-  '3.2.2': ['snare', 6 / 8],
-  '3.3.0': ['snare', 7 / 8],
-  '3.3.2': ['snare', 8 / 8],
-};
 
-const data3 = {
-  '0.0.0': ['hihat'],
-  '0.0.1': ['hihat'],
-  '0.0.2': ['hihat'],
-  '0.0.3': ['hihat'],
-};
+function drawArcPoints(
+  context: CanvasRenderingContext2D,
+  arcData: any
+): void {
+  Object.keys(arcData).forEach(key => {
+    if (typeof arcData[key] !== 'object') {
+      // only draw points
+      return;
+    }
+    drawPoint(context, arcData[key].x, arcData[key].y, "red");
+    context.font = "10px monospace";
+    context.fillStyle = "black";
+    const space = 5;
+    context.fillText(key, arcData[key].x + space, arcData[key].y - space);
+  });
+}
 
-const song = new Song(128);
-const seq1 = createSampleSequence('seq1', data1);
-const seq2 = createSampleSequence('snare', data2);
-const seq3 = createSampleSequence('hihat', data3);
-song.addSequenceAtTime(seq1, new MusicTime(0, 0, 0));
-song.addSequenceAtTime(seq1, new MusicTime(4, 0, 0));
-song.addSequenceAtTime(seq1, new MusicTime(8, 0, 0));
-song.addSequenceAtTime(seq2, new MusicTime(0, 0, 0));
-song.addSequenceAtTime(seq2, new MusicTime(4, 0, 0));
-song.addSequenceAtTime(seq3, new MusicTime(4, 0, 0));
-song.addSequenceAtTime(seq3, new MusicTime(5, 0, 0));
-song.addSequenceAtTime(seq3, new MusicTime(6, 0, 0));
-song.addSequenceAtTime(seq3, new MusicTime(7, 0, 0));
+function drawPoint(
+  context,
+  x: number,
+  y: number,
+  color = "black",
+  radius: number = 3
+): void {
+  context.beginPath();
+  context.arc(x, y, radius, 0, Math.PI * 2);
+  context.fillStyle = color;
+  context.fill();
+}
 
-document.querySelector('#start').addEventListener('click', () => {
-  // player.loadSong(song).then(() => {
-  //
-  //   console.log('done');
-  // });
-  player.play(song);
-});
-
-document.querySelector('#stop').addEventListener('click', () => {
-  player.stop();
-  console.log(MusicTime.TO_TIME_CACHE);
-});
-
-const editor = new Editor(document.querySelector('#editor'), player);
-song.addSection(MusicTime.fromString('8.0.0'), MusicTime.fromString('9.0.0'));
-//song.addSection(MusicTime.fromString('8.0.0'), MusicTime.fromString('9.0.0'));
-song.addSection(MusicTime.fromString('3.0.0'), MusicTime.fromString('5.0.0'));
-// song.addSection(MusicTime.fromString('9.0.0'), MusicTime.fromString('11.0.0'));
-// song.addSection(MusicTime.fromString('1.0.0'), MusicTime.fromString('2.0.0'));
-// song.addSection(MusicTime.fromString('4.0.0'), MusicTime.fromString('5.0.0'));
-// song.addSection(MusicTime.fromString('2.0.0'), MusicTime.fromString('8.0.0'));
-// song.addSection(MusicTime.fromString('1.0.0'), MusicTime.fromString('12.0.0'));
-editor.setSong(song);
+draw();
