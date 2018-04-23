@@ -26,12 +26,14 @@ drawArcPath(
 context.fill();
 ```
 
-The method makes sure that the spacing between multiple arcs all have a consistent width.
+The drawing will be done in such a way that the spacing between multiple arcs all have a consistent width, by adjusting the angle for the outer and inner arc. This prevents the gaps from being wider on the outer edge (which would be the case if the same angle was used for both the outer and inner arc). 
+
+An example (drawing multiple arcs to fill up a full circle) can be found [here](https://petervdn.github.io/arc-path/example/). 
 
 ![picture](https://i.imgur.com/thnaYDQ.png)
 
 ## return data
-The `drawArcPath` method returns an object containing info about the shape that was drawn. it contains the start/end radians for both the inner and outer curve, and the locations of every cornerpoint, which may come in handy if you need to calculate bounding boxes.
+The `drawArcPath` method returns an object containing info about the shape that was drawn. It has the start/end radians for both the inner and outer curve, and the position of every cornerpoint, which may come in handy if you need to calculate bounding boxes.
 
 ![picture](https://i.imgur.com/l4RJQkU.png)
 

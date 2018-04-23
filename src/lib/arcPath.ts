@@ -1,3 +1,15 @@
+/**
+ * Draws a path consisting of 4 parts
+ * @param {CanvasRenderingContext2D} context
+ * @param {number} centerX
+ * @param {number} centerY
+ * @param {number} startRadians
+ * @param {number} endRadians
+ * @param {number} outerRadius in pixels
+ * @param {number} innerRadius in pixels
+ * @param {number} partSpacing in pixels
+ * @returns {IArcData}
+ */
 export default function drawArcPath(
   context: CanvasRenderingContext2D,
   centerX: number,
@@ -27,12 +39,7 @@ export default function drawArcPath(
 
   context.beginPath();
   context.arc(centerX, centerY, outerRadius, arcData.startRadiansOuter, arcData.endRadiansOuter);
-
-  context.lineTo(
-    centerX + Math.cos(arcData.endRadiansInner) * innerRadius,
-    centerY + Math.sin(arcData.endRadiansInner) * innerRadius,
-  );
-
+  context.lineTo(arcData.bottomRight.x, arcData.bottomRight.y);
   context.arc(
     centerX,
     centerY,
@@ -41,11 +48,8 @@ export default function drawArcPath(
     arcData.startRadiansInner,
     true,
   );
+  context.lineTo(arcData.topLeft.x, arcData.topLeft.y);
 
-  context.lineTo(
-    centerX + Math.cos(arcData.startRadiansOuter) * outerRadius,
-    centerY + Math.sin(arcData.startRadiansOuter) * outerRadius,
-  );
   context.closePath();
 
   return arcData;
@@ -60,29 +64,17 @@ export function getArcData(
   innerRadius: number,
   partSpacing: number,
 ): IArcData {
-  const halfOuterSpacingAngle = 0.5 * getRadiansForLength(partSpacing, outerRadius);
-  const halfInnerSpacingAngle = 0.5 * getRadiansForLength(partSpacing, innerRadius);
+  const halfOuterSpacingAngle = 0.5 * partSpacing / outerRadius;
+  const halfInnerSpacingAngle = 0.5 * partSpacing / innerRadius;
   const startRadiansOuter = startRadians + halfOuterSpacingAngle;
   const endRadiansOuter = endRadians - halfOuterSpacingAngle;
   const startRadiansInner = startRadians + halfInnerSpacingAngle;
   const endRadiansInner = endRadians - halfInnerSpacingAngle;
 
-  const topLeft: IPoint = {
-    x: centerX + Math.cos(startRadiansOuter) * outerRadius,
-    y: centerY + Math.sin(startRadiansOuter) * outerRadius,
-  };
-  const topRight: IPoint = {
-    x: centerX + Math.cos(endRadiansOuter) * outerRadius,
-    y: centerY + Math.sin(endRadiansOuter) * outerRadius,
-  };
-  const bottomRight: IPoint = {
-    x: centerX + Math.cos(endRadiansInner) * innerRadius,
-    y: centerY + Math.sin(endRadiansInner) * innerRadius,
-  };
-  const bottomLeft: IPoint = {
-    x: centerX + Math.cos(startRadiansInner) * innerRadius,
-    y: centerY + Math.sin(startRadiansInner) * innerRadius,
-  };
+  const topLeft = getPositionOnCircle(centerX, centerY, startRadiansOuter, outerRadius);
+  const topRight = getPositionOnCircle(centerX, centerY, endRadiansOuter, outerRadius);
+  const bottomRight = getPositionOnCircle(centerX, centerY, endRadiansInner, innerRadius);
+  const bottomLeft = getPositionOnCircle(centerX, centerY, startRadiansInner, innerRadius);
 
   return {
     topLeft,
@@ -96,22 +88,32 @@ export function getArcData(
   };
 }
 
-interface IPoint {
+/**
+ * Returns the position for a point on a circle.
+ * @param {number} centerX
+ * @param {number} centerY
+ * @param {number} radians
+ * @param {number} radius
+ * @returns {IPoint}
+ */
+function getPositionOnCircle(
+  centerX: number,
+  centerY: number,
+  radians: number,
+  radius: number,
+): IPoint {
+  return {
+    x: centerX + Math.cos(radians) * radius,
+    y: centerY + Math.sin(radians) * radius,
+  };
+}
+
+export interface IPoint {
   x: number;
   y: number;
 }
 
-/**
- * Returns the radians for a certain length.
- * @param {number} length
- * @param {number} radius
- * @returns {number}
- */
-function getRadiansForLength(length: number, radius: number): number {
-  // todo get rid of this
-  return length / radius;
-}
-interface IArcData {
+export interface IArcData {
   topLeft: IPoint;
   topRight: IPoint;
   bottomLeft: IPoint;

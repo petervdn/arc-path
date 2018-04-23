@@ -3,17 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>arc-path</title>
+	<title>IPoint | arc-path</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body>
 <header>
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">arc-path</a>
+					<a href="../index.html" class="title">arc-path</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -53,72 +53,101 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="globals.html">Globals</a>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="ipoint.html">IPoint</a>
 				</li>
 			</ul>
-			<h1> arc-path</h1>
+			<h1>Interface IPoint</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<h1 id="arc-path">arc-path</h1>
-				<p>Draws an arc-path on a canvas, with adjustable width and equal spacing on the sides.</p>
-				<h2 id="install">install</h2>
-				<pre><code class="lang-sh">npm install arc-path
-</code></pre>
-				<h2 id="usage">usage</h2>
-				<p>The library exposes the <code>drawArcPath</code> method that accepts a <code>CanvasRenderingContext2D</code> and some parameters about the arc. It only draws a path, so you need to do a <code>fill()</code> or <code>stroke()</code> call after that.</p>
-				<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> drawArcPath <span class="hljs-keyword">from</span> <span class="hljs-string">'draw-arc'</span>;
-
-drawArcPath(
-  context,
-  centerX,
-  centerY,
-  startRadians,
-  endRadians,
-  outerRadius,
-  innerRadius,
-  partSpacing,
- );
-
-context.fill();
-</code></pre>
-				<p>The drawing will be done in such a way that the spacing between multiple arcs all have a consistent width, by adjusting the angle for the outer and inner arc. This prevents the gaps from being wider on the outer edge (which would be the case if the same angle was used for both the outer and inner arc). </p>
-				<p>An example (drawing multiple arcs to fill up a full circle) can be found <a href="https://petervdn.github.io/arc-path/example/">here</a>. </p>
-				<p><img src="https://i.imgur.com/thnaYDQ.png" alt="picture"></p>
-				<h2 id="return-data">return data</h2>
-				<p>The <code>drawArcPath</code> method returns an object containing info about the shape that was drawn. It has the start/end radians for both the inner and outer curve, and the position of every cornerpoint, which may come in handy if you need to calculate bounding boxes.</p>
-				<p><img src="https://i.imgur.com/l4RJQkU.png" alt="picture"></p>
-				<p>The naming for these 4 points (<code>topLeft</code>, <code>topRight</code>, <code>bottomLeft</code>, <code>bottomRight</code>) are in relation to an arc-part that is on the topside of the circle.</p>
-			</div>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">IPoint</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ipoint.html#x" class="tsd-kind-icon">x</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ipoint.html#y" class="tsd-kind-icon">y</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="x" class="tsd-anchor"></a>
+					<h3>x</h3>
+					<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/petervdn/arc-path/blob/0c7ef7f/src/lib/arcPath.ts#L112">lib/arcPath.ts:112</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="y" class="tsd-anchor"></a>
+					<h3>y</h3>
+					<div class="tsd-signature tsd-kind-icon">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/petervdn/arc-path/blob/0c7ef7f/src/lib/arcPath.ts#L113">lib/arcPath.ts:113</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
+						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/iarcdata.html" class="tsd-kind-icon">IArc<wbr>Data</a>
+						<a href="iarcdata.html" class="tsd-kind-icon">IArc<wbr>Data</a>
 					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/ipoint.html" class="tsd-kind-icon">IPoint</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface">
+						<a href="ipoint.html" class="tsd-kind-icon">IPoint</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ipoint.html#x" class="tsd-kind-icon">x</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ipoint.html#y" class="tsd-kind-icon">y</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#drawarcpath" class="tsd-kind-icon">draw<wbr>Arc<wbr>Path</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="globals.html#drawarcpath" class="tsd-kind-icon">draw<wbr>Arc<wbr>Path</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#getarcdata" class="tsd-kind-icon">get<wbr>Arc<wbr>Data</a>
+						<a href="../globals.html#getarcdata" class="tsd-kind-icon">get<wbr>Arc<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#getpositiononcircle" class="tsd-kind-icon">get<wbr>Position<wbr>OnCircle</a>
+						<a href="../globals.html#getpositiononcircle" class="tsd-kind-icon">get<wbr>Position<wbr>OnCircle</a>
 					</li>
 				</ul>
 			</nav>
@@ -188,7 +217,7 @@ context.fill();
 	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>
