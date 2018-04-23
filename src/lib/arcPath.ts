@@ -103,7 +103,7 @@ export function getArcData(
  * @param {number} radius
  * @returns {IPoint}
  */
-function getPositionOnCircle(
+export function getPositionOnCircle(
   centerX: number,
   centerY: number,
   radians: number,
