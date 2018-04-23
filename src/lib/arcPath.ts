@@ -38,8 +38,13 @@ export default function drawArcPath(
   );
 
   context.beginPath();
+  // part 1: CW outer arc
   context.arc(centerX, centerY, outerRadius, arcData.startRadiansOuter, arcData.endRadiansOuter);
-  context.lineTo(arcData.bottomRight.x, arcData.bottomRight.y);
+
+  // part 2: line to inner
+  context.lineTo(arcData.innerStart.x, arcData.innerStart.y);
+
+  // part 3: CCW inner arc
   context.arc(
     centerX,
     centerY,
@@ -48,7 +53,9 @@ export default function drawArcPath(
     arcData.startRadiansInner,
     true,
   );
-  context.lineTo(arcData.topLeft.x, arcData.topLeft.y);
+
+  // part 4 line back to start (outer)
+  context.lineTo(arcData.outerStart.x, arcData.outerStart.y);
 
   context.closePath();
 
@@ -71,16 +78,16 @@ export function getArcData(
   const startRadiansInner = startRadians + halfInnerSpacingAngle;
   const endRadiansInner = endRadians - halfInnerSpacingAngle;
 
-  const topLeft = getPositionOnCircle(centerX, centerY, startRadiansOuter, outerRadius);
-  const topRight = getPositionOnCircle(centerX, centerY, endRadiansOuter, outerRadius);
-  const bottomRight = getPositionOnCircle(centerX, centerY, endRadiansInner, innerRadius);
-  const bottomLeft = getPositionOnCircle(centerX, centerY, startRadiansInner, innerRadius);
+  const outerStart = getPositionOnCircle(centerX, centerY, startRadiansOuter, outerRadius);
+  const outerEnd = getPositionOnCircle(centerX, centerY, endRadiansOuter, outerRadius);
+  const innerStart = getPositionOnCircle(centerX, centerY, endRadiansInner, innerRadius);
+  const innerEnd = getPositionOnCircle(centerX, centerY, startRadiansInner, innerRadius);
 
   return {
-    topLeft,
-    topRight,
-    bottomLeft,
-    bottomRight,
+    outerStart,
+    outerEnd,
+    innerStart,
+    innerEnd,
     startRadiansOuter,
     endRadiansOuter,
     startRadiansInner,
@@ -114,10 +121,10 @@ export interface IPoint {
 }
 
 export interface IArcData {
-  topLeft: IPoint;
-  topRight: IPoint;
-  bottomLeft: IPoint;
-  bottomRight: IPoint;
+  outerStart: IPoint;
+  outerEnd: IPoint;
+  innerEnd: IPoint;
+  innerStart: IPoint;
   startRadiansOuter: number;
   endRadiansOuter: number;
   startRadiansInner: number;
