@@ -39,7 +39,7 @@ The method draws a path for the following blue shape:
 - the method returns an object containing the positions of all four points in the image: `outerStart`, `outerEnd`, `innerStart` and `innerEnd`
 
 ## but... why
-While the above may sound complicated, the reason you would want to use this is to draw a full circle of several parts, all with an equal and straight `partSpacing` between them (instead of a gap that grows wider towards the outer edges)
+The reason you would want to use this is to draw a full circle of several parts, all with an equal amount of `partSpacing` between them (instead of a gap that grows wider towards the outer edges)
 
 ![picture](https://i.imgur.com/iHqzT5C.png)
 
