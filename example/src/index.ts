@@ -11,7 +11,7 @@ const settings = {
   rotateOffset: { value: 0, min: 0, max: 1 },
   showPoints: false,
   drawFirstOnly: false,
-  showSpacing: false,
+  showSpacing: true,
   showDrawOrder: false,
 };
 
@@ -108,22 +108,38 @@ const drawParts = (color = 'deepskyblue', noSpacing = false, clear = true, skipP
 
       const startPoints = getInnerOuterPoints(
         center,
-        settings.innerRadius.value,
         settings.outerRadius.value,
+        settings.innerRadius.value,
         startRadians,
       );
       const endPoints = getInnerOuterPoints(
         center,
-        settings.innerRadius.value,
         settings.outerRadius.value,
+        settings.innerRadius.value,
         endRadians,
       );
 
       drawDottedLine(ctx, startPoints.inner, startPoints.outer, dash, color);
+      const halfStart = getHalfWay(startPoints.inner, startPoints.outer);
+      const perpendicularSpacingPointStart:IPoint = {
+        x: halfStart.x + (Math.cos(startRadians + Math.PI * 0.5) * settings.spacing.value * 0.5),
+        y: halfStart.y + (Math.sin(startRadians + Math.PI * 0.5) * settings.spacing.value * 0.5),
+      };
+
+      drawDottedLine(ctx, halfStart, perpendicularSpacingPointStart, [], 'magenta', 2);
+
 
       // when drawing 1 part, also draw the line for the end
       if (settings.drawFirstOnly) {
         drawDottedLine(ctx, endPoints.inner, endPoints.outer, dash, color);
+
+        const halfEnd = getHalfWay(endPoints.inner, endPoints.outer);
+        const perpendicularSpacingPointEnd:IPoint = {
+          x: halfEnd.x + (Math.cos(endRadians - Math.PI * 0.5) * settings.spacing.value * 0.5),
+          y: halfEnd.y + (Math.sin(endRadians - Math.PI * 0.5) * settings.spacing.value * 0.5),
+        };
+        // drawPoint(ctx, perpendicularSpacingPointEnd.x, perpendicularSpacingPointEnd.y, 'yellow', 5);
+        drawDottedLine(ctx, halfEnd, perpendicularSpacingPointEnd, [], 'magenta', 2);
       }
     }
   }

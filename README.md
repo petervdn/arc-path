@@ -1,6 +1,6 @@
 # arc-path
 
-Draws an arc-path on a canvas, with adjustable width and equal spacing on the sides.
+Draws an arc-path on a canvas, with adjustable width and equal spacing.
 
 ## install
 ```sh
@@ -8,7 +8,7 @@ npm install arc-path
 ```
 
 ## usage
-The library exposes the `drawArcPath` method that accepts a `CanvasRenderingContext2D` and some parameters about the arc. It only draws a path, so you need to do a `fill()` or `stroke()` call after that.
+The library exposes the `drawArcPath` method which can be used like so:
 ```javascript
 import drawArcPath from 'draw-arc';
 
@@ -26,15 +26,24 @@ drawArcPath(
 context.fill();
 ```
 
-The drawing will be done in such a way that the spacing between multiple arcs all have a consistent width, by adjusting the angle for the outer and inner arc. This prevents the gaps from being wider on the outer edge (which would be the case if the same angle was used for both the outer and inner arc). 
 
-An example (drawing multiple arcs to fill up a full circle) can be found [here](https://petervdn.github.io/arc-path/example/). 
+The method draws a path for the following blue shape:
 
-![picture](https://i.imgur.com/thnaYDQ.png)
+![picture](https://i.imgur.com/E3OzSGc.png)
 
-## return data
-The `drawArcPath` method returns an object containing info about the shape that was drawn. It has the start/end radians for both the inner and outer curve, and the position of every cornerpoint, which may come in handy if you need to calculate bounding boxes.
+- `drawArcPath` only draws a path, so you will need to do a `fill()` or `stroke()` call after it
+- the path consists of four parts: two arcs and two straight lines, drawn clockwise and in the order as shown in the image
+- the dashed black lines represent the `startRadians` and `endRadians`
+- the length of the magenta line is half of the `partSpacing`
+- the magenta line is perpendicular to the dashed line
+- the method returns an object containing the positions of all four points in the image: `outerStart`, `outerEnd`, 'innerStart' and 'innerEnd'
 
-![picture](https://i.imgur.com/l4RJQkU.png)
+## why
+While the above may sound complicated, the reason you would use this is to draw a full circle of several parts, all with an equal and straight `partSpacing` between them.
 
-The naming for these 4 points (`topLeft`, `topRight`, `bottomLeft`, `bottomRight`) are in relation to an arc-part that is on the topside of the circle.
+![picture](https://i.imgur.com/iHqzT5C.png)
+
+An interactive example can be found [here](https://petervdn.github.io/arc-path/example/).
+
+
+
