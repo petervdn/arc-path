@@ -1,7 +1,6 @@
 import drawArcPath, { getPositionOnCircle, IPoint } from '../../src';
 
 const canvas = <HTMLCanvasElement>document.querySelector('canvas');
-
 const ctx = canvas.getContext('2d');
 const settings = {
   innerRadius: { value: 120, min: 10, max: 150 },
@@ -14,8 +13,6 @@ const settings = {
   showSpacing: false,
   showDrawOrder: false,
 };
-
-// const drawOnePart = true; // used for taking screenshot for readme
 
 Object.keys(settings).forEach(key => {
   const wrap = document.createElement('div');
@@ -128,7 +125,6 @@ const drawParts = (color = 'deepskyblue', noSpacing = false, clear = true, skipP
 
       drawDottedLine(ctx, halfStart, perpendicularSpacingPointStart, [], 'magenta', 2);
 
-
       // when drawing 1 part, also draw the line for the end
       if (settings.drawFirstOnly) {
         drawDottedLine(ctx, endPoints.inner, endPoints.outer, dash, color);
@@ -138,7 +134,6 @@ const drawParts = (color = 'deepskyblue', noSpacing = false, clear = true, skipP
           x: halfEnd.x + (Math.cos(endRadians - Math.PI * 0.5) * settings.spacing.value * 0.5),
           y: halfEnd.y + (Math.sin(endRadians - Math.PI * 0.5) * settings.spacing.value * 0.5),
         };
-        // drawPoint(ctx, perpendicularSpacingPointEnd.x, perpendicularSpacingPointEnd.y, 'yellow', 5);
         drawDottedLine(ctx, halfEnd, perpendicularSpacingPointEnd, [], 'magenta', 2);
       }
     }
