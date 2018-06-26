@@ -10,7 +10,7 @@ npm install arc-path
 ## usage
 The library exposes the `drawArcPath` method which can be used like so:
 ```javascript
-import drawArcPath from 'draw-arc';
+import drawArcPath from 'arc-path';
 
 drawArcPath(
   context,
